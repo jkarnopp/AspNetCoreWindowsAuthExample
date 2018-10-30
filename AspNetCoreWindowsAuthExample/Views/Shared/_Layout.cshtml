@@ -33,6 +33,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li><a asp-area="" asp-controller="Admin" asp-action="Index"><span class="glyphicon glyphicon-cog"></span> Admin</a></li>
+                    }
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
@@ -41,13 +45,14 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - AspNetCoreWindowsAuthExample</p>
-        </footer>
-    </div>
+<div class="container body-content">
+    <br/><br/>
+    @RenderBody()
+    <hr/>
+    <footer>
+        <p>&copy; 2018 - Kartech LLC</p>
+    </footer>
+</div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

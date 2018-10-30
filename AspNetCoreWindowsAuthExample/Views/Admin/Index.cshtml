@@ -1,0 +1,26 @@
+﻿@model AspNetCoreWindowsAuthExample.ViewModels.BaseViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<br /><br />
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h2>@Model.Title</h2></div>
+
+            @if (Model.Message != null)
+            {
+                <p class="alert-danger text-center">@Model.Message</p>
+            }
+
+            <div class="list-group">
+
+                <a asp-area="" asp-controller="UserInformationAdmin" asp-action="Index" class="list-group-item"><span class="glyphicon glyphicon-user"></span> User Administration</a>
+                <a asp-area="" asp-controller="SysConfigs" asp-action="Index" class="list-group-item"><span class="glyphicon glyphicon-wrench"></span> Edit System Configuration</a>
+            </div>
+
+            <div class="panel-footer">&nbsp;</div>
+        </div>
+    </div>
+</div>

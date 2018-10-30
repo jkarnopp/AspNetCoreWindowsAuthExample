@@ -1,0 +1,91 @@
+﻿@model AspNetCoreWindowsAuthExample.ViewModels.UserInfoAdminEditViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<br /><br />
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h2>@Model.Title</h2></div>
+
+            @if (Model.Message != null)
+            {
+                <p class="alert-danger text-center">@Model.Message</p>
+            }
+
+            <br />
+            <div class="panel-body">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <input type="hidden" asp-for="UserInformation.UserInformationId" />
+                    <div class="form-group">
+                        <label asp-for="UserInformation.LanId" class="control-label"></label>
+                        <input asp-for="UserInformation.LanId" class="form-control" />
+                        <span asp-validation-for="UserInformation.LanId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserInformation.FirstName" class="control-label"></label>
+                        <input asp-for="UserInformation.FirstName" class="form-control" />
+                        <span asp-validation-for="UserInformation.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserInformation.LastName" class="control-label"></label>
+                        <input asp-for="UserInformation.LastName" class="form-control" />
+                        <span asp-validation-for="UserInformation.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserInformation.Email" class="control-label"></label>
+                        <input asp-for="UserInformation.Email" class="form-control" />
+                        <span asp-validation-for="UserInformation.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="UserInformation.Enabled" /> @Html.DisplayNameFor(model => model.UserInformation.Enabled)
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <label>Roles</label>
+                    <div class="row">
+                        @{
+                            int cnt = 0;
+                            foreach (var userRole in Model.AssignedRoleDatas)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+
+                                @:</div><div class="row">
+
+                                }
+
+                                <div class="col-md-4">
+
+                                    <input type="checkbox"
+                                           name="selectedUserRoles"
+                                           value="@userRole.UserRoleId"
+                                           @(Html.Raw(userRole.Assigned ? "checked=\"checked\"" : "")) />
+                                    @userRole.UserRoleId @userRole.Name
+                                </div>
+
+                            }
+                        }
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,98 @@
+﻿@using X.PagedList.Mvc
+@using X.PagedList.Mvc.Core
+
+@model AspNetCoreWindowsAuthExample.ViewModels.UserInfoAdminIndexViewModel
+
+<br /><br />
+<div class="col-md-10 col-md-offset-1">
+
+    @using (Html.BeginForm("Index", "UserInformationAdmin", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+    {
+        <p>
+            @Html.TextBox("SearchString", Model.PageListAction.CurrentFilter as string, null, new { @class = "form-control", placeholder = "Find by name" })
+
+            <input type="submit" value="Search" class="btn btn-default" />
+        </p>
+    }
+    <div class="panel panel-default">
+
+        <table class="table">
+            <tr>
+                <th>
+                    LanId
+                </th>
+                <th>
+
+                    @Html.ActionLink("First Name", "Index", new { sortOrder = Model.PageListAction.FirstNameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+
+                    @Html.ActionLink("Last Name", "Index", new { sortOrder = Model.PageListAction.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    Distributor Code
+                </th>
+                <th>
+                    Email
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.UserInformations)
+            {
+                string selectedRow = "";
+                if (item.UserInformationId == ViewBag.UserInformationId)
+                {
+                    selectedRow = "selectedrow";
+                }
+                <tr class="@selectedRow">
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LanId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Select", "Index", new { id = item.UserInformationId, page = Model.UserInformations.PageNumber, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }) |
+                        <a asp-area="" asp-controller="UserInformationAdmin" asp-action="Edit" asp-route-id="@item.UserInformationId">Edit</a> |
+                        <a asp-area="" asp-controller="UserInformationAdmin" asp-action="Delete" asp-route-id="@item.UserInformationId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <p>
+        <a asp-area="" asp-controller="UserInformationAdmin" asp-action="Create" class="btn btn-primary">Create New User</a>
+    </p>
+
+    Page @(Model.UserInformations.PageCount < Model.UserInformations.PageNumber ? 0 : Model.UserInformations.PageNumber) of @Model.UserInformations.PageCount
+
+    @*<pager class="pager-container" list="@Model.UserInformations" options="@PagedListRenderOptions.TwitterBootstrapPager" asp-action="Index" asp-controller="UserInformationAdmin" asp-route-keyword="@Model.UserInformations" />*@
+
+    @Html.PagedListPager(Model.UserInformations, page => Url.Action("Index", new { id = "", page = page, sortOrder = Model.PageListAction.CurrentSort, currentFilter = Model.PageListAction.CurrentFilter }))
+    <br /><br />
+
+    @if (Model.UserRoles != null)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">Roles for <strong>@Model.PageListAction.LanId</strong></div>
+            <table class="table">
+                <tr><th>Role</th><th>Description</th></tr>
+
+                @foreach (var item in Model.UserRoles)
+                {
+                    <tr><td>@item.Name</td><td>@item.Description</td></tr>
+                }
+            </table>
+        </div>
+    }
+</div>
+<div class="clearfix"></div>
